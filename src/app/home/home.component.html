@@ -1,0 +1,19 @@
+<div class="mb-3">
+    <p *ngIf="sign==false">{{msg}} <a class="mx-2" (click)="signIn()">Sign Attendance</a> </p>
+    <p *ngIf="sign==true && sigOut==false">{{msg}} {{dateToday | date:'short'}}
+      <span class="text-bg-warning" *ngIf="late==true && lateR==false">
+        <br>
+         You are late today. 
+        <label>Reason: </label>
+        <select class="mx-1" (change)="lateReason($event)">
+          <option value="" disabled selected>Select Reason</option>
+          <ng-container *ngFor="let item of excusesList">
+            <option [value]="item.id">{{item.value}}</option>
+          </ng-container>
+        </select>
+      </span>
+      <a *ngIf="sign == true && sigOut == false" class="mx-2" (click)="signOut()">Sign Out</a>
+    </p>
+    <p *ngIf="sign==true && sigOut==true">{{msg}} {{dateToday | date:'short'}}</p>
+    <p *ngIf="sign == true && sigOut == false"> <b>You came <span *ngIf="latey==true">late</span> <span *ngIf="latey==false">early</span>  today!</b></p>
+    </div>

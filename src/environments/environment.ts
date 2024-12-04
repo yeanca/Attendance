@@ -1,11 +1,11 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
-  }
+    apiKey: 'AIzaSyCNcsrEJ3PSMSd1PPtijSl0d0wkObCc89g',
+    authDomain: 'attendance-300eb.firebaseapp.com',
+    projectId: 'attendance-300eb',
+    storageBucket: 'attendance-300eb.firebasestorage.app',
+    messagingSenderId: '12239367983',
+    appId: '1:12239367983:web:8547e80588e60edc2f3bda',
+  },
 };

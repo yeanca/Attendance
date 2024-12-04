@@ -1,1 +1,62 @@
-<p>register works!</p>
+<mat-card>
+    <mat-card-header>
+        <mat-card-title> Register </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <form>
+          <div class="example-container">
+            <mat-form-field appearance="outline">
+              <mat-label>Enter your Name</mat-label>
+              <input matInput type="text" placeholder="Adeyinka Adedapo" required formControlName="fullName">
+              <mat-error>Fullname is required!</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="example-container">
+            <mat-form-field appearance="outline">
+              <mat-label>Enter your Username</mat-label>
+              <input matInput type="text" placeholder="username" required formControlName="userName">
+              <mat-error>Username is required!</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="example-container">
+            <mat-form-field appearance="outline">
+              <mat-label>Enter your Email</mat-label>
+              <input matInput type="email" placeholder="pat@example.com" required formControlName="email">
+              <mat-error>Email is required!</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="example-container">
+            <mat-form-field appearance="outline">
+              <mat-label>Enter your password</mat-label>
+              <input matInput type="password" formControlName="password" required>
+              <mat-error>Password is required!</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="example-container">
+            <mat-radio-group aria-label="Select an option" required formControlName="role" >
+                <mat-radio-button value="Admin">Admin</mat-radio-button>
+                <mat-radio-button value="User">User</mat-radio-button>
+              <!-- <mat-error *ngIf="submitted && registerForm.get('role')?.invalid">Role is required!</mat-error> -->
+            </mat-radio-group>
+          </div>
+          <br>
+            <div class="example-container">
+              <mat-form-field appearance="outline">
+                <mat-label>Department</mat-label>
+                <mat-select formControlName="department">
+                  <mat-option>Please Select a Department</mat-option>
+                  <mat-option *ngFor="let item of [1,2,3]" [value]="item">
+                    {{item}}
+                  </mat-option>
+                </mat-select>
+                <!-- <mat-error *ngIf="registerForm.controls['department'].hasError('required')">You must make a selection</mat-error> -->
+              </mat-form-field>
+            </div>
+            <div class="example-container">
+            <button mat-raised-button type="submit" color="primary">Register</button>
+            </div>
+        </form>
+
+        <button (click)="signUp('Ogilizibe', 'ogi4life@gmail.com', 'password')">Register</button>
+      </mat-card-content>
+  </mat-card>

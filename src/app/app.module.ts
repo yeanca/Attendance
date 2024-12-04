@@ -9,23 +9,19 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { environment } from '../environments/environment';
 import { AngularMaterialModule } from './angular-material.module';
 import { RegisterComponent } from './auth/register/register.component';
+import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './auth/login/login.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    RegisterComponent
-  ],
+  declarations: [AppComponent, RegisterComponent, HomeComponent,LoginComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AngularMaterialModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule
-
+    AngularFireAuthModule,
   ],
-  providers: [
-    provideAnimationsAsync()
-  ],
-  bootstrap: [AppComponent]
+  providers: [provideAnimationsAsync()],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
