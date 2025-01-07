@@ -11,6 +11,8 @@ import { User } from '../../models';
 export class NavComponent implements OnInit {
   @Output() public sidenavToggle = new EventEmitter();
 
+  isCollapsed: boolean = true;
+  
   constructor(public authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
@@ -25,6 +27,10 @@ export class NavComponent implements OnInit {
         this.authService.currentuserSignal.set(null);
       }
     });
+  }
+
+  toggle(): void {
+    this.isCollapsed = !this.isCollapsed; // Toggle the collapsed state
   }
 
   logOut(){
