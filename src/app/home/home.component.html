@@ -1,19 +1,40 @@
-<div class="mb-3">
-    <p *ngIf="sign==false">{{msg}} <a class="mx-2" (click)="signIn()">Sign Attendance</a> </p>
-    <p *ngIf="sign==true && sigOut==false">{{msg}} {{dateToday | date:'short'}}
-      <span class="text-bg-warning" *ngIf="late==true && lateR==false">
-        <br>
-         You are late today. 
-        <label>Reason: </label>
-        <select class="mx-1" (change)="lateReason($event)">
-          <option value="" disabled selected>Select Reason</option>
-          <ng-container *ngFor="let item of excusesList">
-            <option [value]="item.id">{{item.value}}</option>
-          </ng-container>
-        </select>
-      </span>
-      <a *ngIf="sign == true && sigOut == false" class="mx-2" (click)="signOut()">Sign Out</a>
-    </p>
-    <p *ngIf="sign==true && sigOut==true">{{msg}} {{dateToday | date:'short'}}</p>
-    <p *ngIf="sign == true && sigOut == false"> <b>You came <span *ngIf="latey==true">late</span> <span *ngIf="latey==false">early</span>  today!</b></p>
-    </div>
+ 
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+          <div class="card">
+              <div class="card-header">
+                  Employee Dashboard
+              </div>
+              <div class="card-body">
+                <h4>Hi, {{authService.currentuserSignal().displayName}}</h4>
+                  <button class="btn btn-primary mb-3" (click)="signIn()" *ngIf="sign==false">Mark Attendance</button>
+                  <button class="btn btn-primary mb-3" (click)="signOut()" *ngIf="sign == true && sigOut == false">Sign Out</button>
+                  <p *ngIf="sign==true && sigOut==false">You signed in at: <span *ngIf="fetchedData as data">{{data.timestamp | date:'short'}}</span></p>
+                  <p *ngIf="sign==true && sigOut==true">{{msg}} {{fetchedData.timeout | date:'short'}}</p>
+
+                <h4 *ngIf="sign">You are <span *ngIf="sign && lateR">late</span> <span *ngIf="!lateR && sign">early</span> today!</h4>
+
+                  <!-- <h5>Attendance History</h5>
+                  <table class="table">
+                      <thead>
+                          <tr>
+                              <th scope="col">Date</th>
+                              <th scope="col">Check-in Time</th>
+                              <th scope="col">Status</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let signIn of signInList">
+                              <td>{{signIn.timestamp |date}}</td>
+                              <td>09:00 AM</td>
+                              <td>Present</td>
+                          </tr>
+                      </tbody>
+                  </table> -->
+              </div>
+          </div>
+      </div>
+  </div>
+
+
+

@@ -8,4 +8,5 @@ export const environment = {
     messagingSenderId: '12239367983',
     appId: '1:12239367983:web:8547e80588e60edc2f3bda',
   },
+  setTime:"08:00"
 };

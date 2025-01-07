@@ -7,9 +7,14 @@ import { AuthService } from './services/auth.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
-  title = 'Attendance';
-  constructor(private authService:AuthService){}
+  title = 'Employee Attendance Tracker';
+  
+  constructor(public authService:AuthService){}
   ngOnInit(): void {
     
+  }
+
+  logOut(){
+    this.authService.logout().subscribe(()=>{});
   }
 }

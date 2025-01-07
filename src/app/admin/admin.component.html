@@ -1,0 +1,19 @@
+<div class="container mt-4">
+    <h2>Month Attendance Summary</h2>
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Name</th>
+                <th>Total Attendance</th>
+                <th>Total Late</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of userSummaries">
+                <td>{{ user.name }}</td>
+                <td>{{ user.totalAttendance }}</td>
+                <td>{{ user.totalLate }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

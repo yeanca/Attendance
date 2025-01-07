@@ -1,2 +1,35 @@
-<button (click)="login('ogi4life@gmail.com', 'password')">Login</button>
-
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                Employee Login
+            </div>
+            <div class="card-body">
+              <form [formGroup]="loginForm" (ngSubmit)="login()">
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email address</label>
+                  <input type="email" class="form-control" id="email" aria-describedby="emailHelp" formControlName="email" required>
+                  <div class="invalid-feedback" *ngIf="loginForm.get('email').hasError('required') && loginForm.get('email').touched">
+                    Email is required!
+                  </div>
+                  <div class="invalid-feedback" *ngIf="loginForm.get('email').hasError('email') && loginForm.get('email').touched">
+                    Please enter a valid email address!
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="password" class="form-label">Password</label>
+                  <input type="password" class="form-control" id="password" formControlName="password" required>
+                  <div class="invalid-feedback" *ngIf="loginForm.get('password').hasError('required') && loginForm.get('password').touched">
+                    Password is required!
+                  </div>
+                  <div class="invalid-feedback" *ngIf="loginForm.get('password').hasError('minlength') && loginForm.get('password').touched">
+                    Password is required!
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">Login</button>
+              </form>
+              <a [routerLink]="['/reset']">Forgot Password</a>
+            </div>
+        </div>
+    </div>
+</div>

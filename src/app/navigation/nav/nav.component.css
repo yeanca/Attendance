@@ -1,0 +1,22 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+/* a {
+  text-decoration: none;
+  color: white;
+} */
+
+/* a:hover, a:active{
+  color: lightgray;
+} */
+
+.navigation-items{
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+a.disabled{
+pointer-events: none;
+cursor: not-allowed;
+}

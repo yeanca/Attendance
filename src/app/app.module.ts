@@ -11,15 +11,29 @@ import { AngularMaterialModule } from './angular-material.module';
 import { RegisterComponent } from './auth/register/register.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './auth/login/login.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NavComponent } from './navigation/nav/nav.component';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { AdminComponent } from './admin/admin.component';
 
 @NgModule({
-  declarations: [AppComponent, RegisterComponent, HomeComponent,LoginComponent],
+  declarations: [
+    AppComponent,
+    RegisterComponent,
+    HomeComponent,
+    LoginComponent,
+    NavComponent,
+    ResetPasswordComponent,
+    AdminComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AngularMaterialModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
+    ReactiveFormsModule,
+    FormsModule,
   ],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],
