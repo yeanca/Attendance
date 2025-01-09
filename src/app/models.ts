@@ -13,6 +13,13 @@ export interface SignIn {
   late?: boolean;
 }
 
+export interface AuthUser{
+  id: string;
+  email: string;
+  displayName: string;
+  role: string;
+}
+
 export interface UserSummary {
   name: string;
   totalAttendance: number;

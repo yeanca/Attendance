@@ -1,5 +1,5 @@
 <div class="container mt-4">
-    <h3>Today's Attendance </h3>
+    <h3> {{selectedDate | date}} Attendance </h3>
     <div>
         <label for="date-input">Select Date:</label>
         <input
@@ -18,6 +18,7 @@
                     <th>Time in</th>
                     <th>Time out</th>
                     <th>Late/Early</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -26,6 +27,7 @@
                     <td>{{ user.timestamp |date:'shortTime' }}</td>
                     <td>{{ user.timeout }}</td>
                     <td><span *ngIf="user.late">Late</span> <span *ngIf="!user.late">Early</span></td>
+                    <td> <button *ngIf="user.late" class="btn btn-sm btn-primary">Not Late?</button> </td>
                 </tr>
             </tbody>
         </table>

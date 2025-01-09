@@ -9,9 +9,9 @@ import { User } from '../../models';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent implements OnInit {
-  @Output() public sidenavToggle = new EventEmitter();
 
   isCollapsed: boolean = true;
+  role:string='';
   
   constructor(public authService: AuthService, private router: Router) { }
 
@@ -22,11 +22,33 @@ export class NavComponent implements OnInit {
           email:user.email!,
           displayName:user.displayName!
         });
-        console.log(this.authService.currentuserSignal())
+        
+        const userRoleObservable = this.authService.getUserRole(user.displayName);
+          userRoleObservable.subscribe(role => {
+            this.role = role.role;
+            console.log(role);
+          });
+
       }else{
         this.authService.currentuserSignal.set(null);
       }
     });
+
+
+  }
+
+  getUserRole() {
+    try {
+      const user = this.authService.currentuserSignal().displayName;
+      console.log('user here: ',user)
+      const userRoleObservable = this.authService.getUserRole(user);
+      userRoleObservable.subscribe(role => {
+        this.role = role.role;
+        console.log(role);
+      });
+    } catch (error) {
+      console.error('Error fetching user role:', error.message);
+    }
   }
 
   toggle(): void {
@@ -37,11 +59,6 @@ export class NavComponent implements OnInit {
     this.authService.logout().subscribe(()=>{});
     this.router.navigate(['/login']);
   }
-
-  public onToggleSidenav = () => {
-    this.sidenavToggle.emit();
-  }
-
   
  get isUserLoggedIn() {
     const user = this.authService.currentuserSignal();
@@ -51,11 +68,5 @@ export class NavComponent implements OnInit {
   get user():User{
     return this.authService.currentuserSignal() as User;
   }
-  // get isAdmin():boolean{
-  //   return this.user.role=='Admin'
-  // }
-  // get isUser():boolean{
-  //   return this.user.role=='User'
-  // }
 
 }

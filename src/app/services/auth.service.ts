@@ -1,8 +1,8 @@
 import { Injectable, signal } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { updateProfile } from 'firebase/auth';
-import { BehaviorSubject, from, Observable } from 'rxjs';
-import { User } from '../models';
+import { BehaviorSubject, from, map, Observable } from 'rxjs';
+import { AuthUser, SignIn, User } from '../models';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 
 @Injectable({
@@ -83,7 +83,40 @@ export class AuthService {
     }));
   }
 
-  getUserRole(userId: string): Observable<any> {
-    return this.db.object(`users/${userId}`).valueChanges();
+  // async getUserRole(): Promise<Observable<any>> {
+  //   const user = this.currentuserSignal().email; // Fetch the currently authenticated user
+  //   console.log('user here: ',user)
+  //   if (user) {
+  //     let fix= this.db.object(`users/${user}`).valueChanges(); // Fetch user role by UID
+  //     console.log('found: ',fix);
+  //     return fix
+  //   } else {
+  //     throw new Error('User is not authenticated'); // Handle unauthenticated state
+  //   }
+  // }
+
+  getUserRole(name: string): Observable<AuthUser | null> {
+    return this.db
+      .list('/users', (ref) => ref.orderByChild('displayName').equalTo(name))
+      .snapshotChanges()
+      .pipe(
+        map((actions) => {
+          // Map the actions into a structured array
+          const users = actions.map((a) => {
+            const data = a.payload.val();
+            const id = a.payload.key;
+  
+            if (data && typeof data === 'object') {
+              return { id, ...data } as AuthUser; // Cast to AuthUser
+            } else {
+              return null; // Return null if data is not an object
+            }
+          });
+  
+          // Return the first matching user or null if none found
+          return users.length > 0 ? users[0] : null;
+        })
+      );
   }
+  
 }
