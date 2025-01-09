@@ -128,4 +128,32 @@ export class AttendanceService {
     );
   }
 
+  //fetch data for date
+  fetchDataByDate(inputDate: string): Observable<SignIn[]> {
+    return this.db.list(this.dbPath).snapshotChanges()
+      .pipe(
+        map(actions =>
+          actions.map(a => {
+            const data = a.payload.val();
+            const id = a.payload.key;
+  
+            // Check if data is an object and return a new object
+            if (data && typeof data === 'object') {
+              return { id, ...data } as SignIn; // Cast to SignIn model
+            } else {
+              return { id } as SignIn; // Return an object with just the id if data is not an object
+            }
+          })
+        ),
+        map(dataArray =>
+          dataArray.filter(item => {
+            const itemDate = item.timestamp ? item.timestamp.split('T')[0] : null; // Extract date from timestamp
+            return itemDate === inputDate; // Filter items matching the inputDate
+          })
+        )
+      );
+  }
+  
+
+
 }
