@@ -13,7 +13,8 @@ export class TodayComponent implements OnInit {
   constructor(private attendanceService:AttendanceService){}
 
   ngOnInit(): void {
-    
+    this.selectedDate = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+    this.fetchData();
   }
 
   fetchData() {
