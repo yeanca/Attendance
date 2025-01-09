@@ -15,6 +15,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavComponent } from './navigation/nav/nav.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { AdminComponent } from './admin/admin.component';
+import { TodayComponent } from './attendance/today/today.component';
+import { MonthComponent } from './attendance/month/month.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,8 @@ import { AdminComponent } from './admin/admin.component';
     NavComponent,
     ResetPasswordComponent,
     AdminComponent,
+    TodayComponent,
+    MonthComponent
   ],
   imports: [
     BrowserModule,

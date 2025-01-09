@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { AttendanceService } from '../services/attendance.service';
-import { SignIn, UserSummary } from '../models';
-import { AuthService } from '../services/auth.service';
+import { SignIn, UserSummary } from '../../models';
+import { AttendanceService } from '../../services/attendance.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-admin',
-  templateUrl: './admin.component.html',
-  styleUrl: './admin.component.css',
+  selector: 'app-month',
+  templateUrl: './month.component.html',
+  styleUrl: './month.component.css'
 })
-export class AdminComponent implements OnInit {
+export class MonthComponent implements OnInit {
   signIns: SignIn[] = [];
   userSummaries: UserSummary[] = [];
   month: string = new Date().toLocaleString('default', { month: 'long' });
@@ -57,3 +57,4 @@ export class AdminComponent implements OnInit {
     this.userSummaries = Object.values(userMap);
   }
 }
+
