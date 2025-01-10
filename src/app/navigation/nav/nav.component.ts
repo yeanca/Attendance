@@ -55,6 +55,10 @@ export class NavComponent implements OnInit {
     this.isCollapsed = !this.isCollapsed; // Toggle the collapsed state
   }
 
+  collapseNavbar(): void {
+    this.isCollapsed = true; // Collapse the navbar
+  }
+
   logOut(){
     this.authService.logout().subscribe(()=>{});
     this.router.navigate(['/login']);

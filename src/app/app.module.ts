@@ -17,6 +17,7 @@ import { ResetPasswordComponent } from './auth/reset-password/reset-password.com
 import { AdminComponent } from './admin/admin.component';
 import { TodayComponent } from './attendance/today/today.component';
 import { MonthComponent } from './attendance/month/month.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { MonthComponent } from './attendance/month/month.component';
     ResetPasswordComponent,
     AdminComponent,
     TodayComponent,
-    MonthComponent
+    MonthComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
