@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AttendanceService } from '../../services/attendance.service';
 import { SignIn } from '../../models';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-today',
@@ -10,7 +11,7 @@ import { SignIn } from '../../models';
 export class TodayComponent implements OnInit {
   signIns:SignIn[]=[];
   selectedDate:string='';
-  constructor(private attendanceService:AttendanceService){}
+  constructor(private attendanceService:AttendanceService, private matSnackBar:MatSnackBar){}
 
   ngOnInit(): void {
     this.selectedDate = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
@@ -23,6 +24,24 @@ export class TodayComponent implements OnInit {
         this.signIns=response;
       })
     }
+  }
+
+  updateLate(id: string) {
+    let fix = this.signIns.find(x => x.id == id);
+    let data: SignIn = {
+      id: fix.id,
+      name: fix.name,
+      timestamp: fix.timestamp,
+      late: false
+    };
+    this.attendanceService.updateLate(id, data).then(response => {
+      this.fetchData();
+      this.matSnackBar.open('Data updated!', 'Close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        duration: 5000
+      });
+    })
   }
 
 }

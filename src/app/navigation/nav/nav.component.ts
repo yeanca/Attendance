@@ -26,7 +26,7 @@ export class NavComponent implements OnInit {
         const userRoleObservable = this.authService.getUserRole(user.displayName);
           userRoleObservable.subscribe(role => {
             this.role = role.role;
-            console.log(role);
+            // console.log(role);
           });
 
       }else{
@@ -40,11 +40,11 @@ export class NavComponent implements OnInit {
   getUserRole() {
     try {
       const user = this.authService.currentuserSignal().displayName;
-      console.log('user here: ',user)
+      // console.log('user here: ',user)
       const userRoleObservable = this.authService.getUserRole(user);
       userRoleObservable.subscribe(role => {
         this.role = role.role;
-        console.log(role);
+        // console.log(role);
       });
     } catch (error) {
       console.error('Error fetching user role:', error.message);

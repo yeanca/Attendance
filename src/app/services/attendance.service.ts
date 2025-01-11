@@ -10,8 +10,8 @@ import { SignIn } from '../models';
 })
 export class AttendanceService {
   private dbPath = '/attendance';
-  setTime=environment.setTime;
-  constructor(private db: AngularFireDatabase) {}
+  setTime = environment.setTime;
+  constructor(private db: AngularFireDatabase) { }
 
   signIn(data: any): Promise<void> {
     const id = uuidv4(); // Generate a unique ID
@@ -19,30 +19,41 @@ export class AttendanceService {
     const currentHours = timestamp.getHours(); // Get current hours
     const currentMinutes = timestamp.getMinutes(); // Get current minutes
     const [comparisonHours, comparisonMinutes] = this.setTime.split(':').map(Number);
-    const late: boolean = (currentHours > comparisonHours) || 
-                          (currentHours === comparisonHours && currentMinutes > comparisonMinutes);
+    const late: boolean = (currentHours > comparisonHours) ||
+      (currentHours === comparisonHours && currentMinutes > comparisonMinutes);
     const dataWithIdAndTimestamp = { id, ...data, timestamp: timestamp.toISOString(), late }; // Add ID, timestamp, and late to data
 
-  // console.log('Data to be saved:', dataWithIdAndTimestamp);
+    // console.log('Data to be saved:', dataWithIdAndTimestamp);
 
-    return this.db.list(this.dbPath).set(id, dataWithIdAndTimestamp) 
+    return this.db.list(this.dbPath).set(id, dataWithIdAndTimestamp)
       .then(() => {
         console.log('Data saved successfully with ID:', id);
       })
       .catch((error) => {
         console.error('Error saving data: ', error);
       });
-}
+  }
 
   signOut(id: string, updatedData: Partial<SignIn>): Promise<void> {
-      return this.db.list(this.dbPath).update(id, updatedData)
-        .then(() => {
-          console.log('Data updated successfully with ID:', id);
-        })
-        .catch((error) => {
-          console.error('Error updating data: ', error);
-        });
-    }
+    return this.db.list(this.dbPath).update(id, updatedData)
+      .then(() => {
+        console.log('Data updated successfully with ID:', id);
+      })
+      .catch((error) => {
+        console.error('Error updating data: ', error);
+      });
+  }
+
+  updateLate(id: string, updatedData: Partial<SignIn>): Promise<void> {
+    console.log(updatedData)
+    return this.db.list(this.dbPath).update(id, updatedData)
+      .then(() => {
+        console.log('Data updated successfully with ID:', id);
+      })
+      .catch((error) => {
+        console.error('Error updating data: ', error);
+      });
+  }
 
 
   fetchDataByNameAndDate(name: string): Observable<SignIn | null> {
@@ -50,7 +61,7 @@ export class AttendanceService {
 
     return this.db.list(this.dbPath, ref => ref.orderByChild('name').equalTo(name)).snapshotChanges()
       .pipe(
-        map(actions => 
+        map(actions =>
           actions.map(a => {
             const data = a.payload.val();
             const id = a.payload.key;
@@ -78,7 +89,7 @@ export class AttendanceService {
 
     return this.db.list(this.dbPath, ref => ref.orderByChild('name').equalTo(name)).snapshotChanges()
       .pipe(
-        map(actions => 
+        map(actions =>
           actions.map(a => {
             const data = a.payload.val();
             const id = a.payload.key;
@@ -104,7 +115,7 @@ export class AttendanceService {
     const startOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
     const endOfMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0, 23, 59, 59).toISOString();
 
-    return this.db.list<SignIn>(this.dbPath, ref => 
+    return this.db.list<SignIn>(this.dbPath, ref =>
       ref.orderByChild('timestamp').startAt(startOfMonth).endAt(endOfMonth)
     ).snapshotChanges().pipe(
       map(actions => actions.map(a => {
@@ -117,7 +128,7 @@ export class AttendanceService {
 
   // Fetch data over a specified time range
   fetchDataInRange(startDate: string, endDate: string): Observable<SignIn[]> {
-    return this.db.list<SignIn>(this.dbPath, ref => 
+    return this.db.list<SignIn>(this.dbPath, ref =>
       ref.orderByChild('timestamp').startAt(startDate).endAt(endDate)
     ).snapshotChanges().pipe(
       map(actions => actions.map(a => {
@@ -136,7 +147,7 @@ export class AttendanceService {
           actions.map(a => {
             const data = a.payload.val();
             const id = a.payload.key;
-  
+
             // Check if data is an object and return a new object
             if (data && typeof data === 'object') {
               return { id, ...data } as SignIn; // Cast to SignIn model
@@ -153,7 +164,7 @@ export class AttendanceService {
         )
       );
   }
-  
+
 
 
 }
