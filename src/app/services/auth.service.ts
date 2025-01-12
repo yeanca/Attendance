@@ -83,18 +83,7 @@ export class AuthService {
     }));
   }
 
-  // async getUserRole(): Promise<Observable<any>> {
-  //   const user = this.currentuserSignal().email; // Fetch the currently authenticated user
-  //   console.log('user here: ',user)
-  //   if (user) {
-  //     let fix= this.db.object(`users/${user}`).valueChanges(); // Fetch user role by UID
-  //     console.log('found: ',fix);
-  //     return fix
-  //   } else {
-  //     throw new Error('User is not authenticated'); // Handle unauthenticated state
-  //   }
-  // }
-
+  
   getUserRole(name: string): Observable<AuthUser | null> {
     return this.db
       .list('/users', (ref) => ref.orderByChild('displayName').equalTo(name))

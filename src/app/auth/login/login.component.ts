@@ -8,7 +8,7 @@ import { User } from '../../models';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
+  styleUrls: ['./login.component.css'], // Corrected from styleUrl to styleUrls
 })
 export class LoginComponent implements OnInit {
   hide = true;
@@ -17,11 +17,32 @@ export class LoginComponent implements OnInit {
     email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required]
   });
-  private returnUrl;
-  constructor(private authService: AuthService,private formBuilder: FormBuilder,private router: Router, private matSnackBar: MatSnackBar,private activatedRoute: ActivatedRoute) {}
+  private returnUrl: string;
+  displayName: string;
+
+  constructor(
+    private authService: AuthService,
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private matSnackBar: MatSnackBar,
+    private activatedRoute: ActivatedRoute
+  ) {}
+
   ngOnInit(): void {
     this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
+    this.authService.user$.subscribe(user => {
+      if (user) {
+        this.authService.currentuserSignal.set({
+          email: user.email!,
+          displayName: user.displayName!
+        });
+        this.displayName = user.displayName;
+      } else {
+        this.authService.currentuserSignal.set(null);
+      }
+    });
   }
+
   login(): void {
     if (this.loginForm.valid) {
       const email = this.loginForm.controls['email'].value;
@@ -29,11 +50,20 @@ export class LoginComponent implements OnInit {
 
       this.authService.login(email, password).subscribe({
         next: () => {
-          this.router.navigate([this.returnUrl]);
-          this.matSnackBar.open('Login successful', 'Close', {
-            horizontalPosition: 'center',
-            verticalPosition: 'top',
-            duration: 5000
+          // Check the user's role after login
+          this.authService.getUserRole(this.displayName).subscribe(role => {
+            // Navigate based on the user's role
+            if (role.role === 'Admin') {
+              this.router.navigate(['/admin']);
+            } else {
+              this.router.navigate([this.returnUrl]);
+            }
+
+            this.matSnackBar.open('Login successful', 'Close', {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              duration: 5000
+            });
           });
         },
         error: (err) => {

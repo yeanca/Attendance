@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AttendanceService } from '../../services/attendance.service';
 import { SignIn } from '../../models';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-today',
@@ -11,7 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class TodayComponent implements OnInit {
   signIns:SignIn[]=[];
   selectedDate:string='';
-  constructor(private attendanceService:AttendanceService, private matSnackBar:MatSnackBar){}
+  constructor(private attendanceService:AttendanceService, private matSnackBar:MatSnackBar, private router:Router) { }
 
   ngOnInit(): void {
     this.selectedDate = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
@@ -44,4 +45,7 @@ export class TodayComponent implements OnInit {
     })
   }
 
+  goBack(): void {
+    this.router.navigate(['admin']); 
+  }
 }

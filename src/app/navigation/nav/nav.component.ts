@@ -11,25 +11,25 @@ import { User } from '../../models';
 export class NavComponent implements OnInit {
 
   isCollapsed: boolean = true;
-  role:string='';
-  
+  role: string = '';
+
   constructor(public authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    this.authService.user$.subscribe(user=>{
-      if(user){
+    this.authService.user$.subscribe(user => {
+      if (user) {
         this.authService.currentuserSignal.set({
-          email:user.email!,
-          displayName:user.displayName!
+          email: user.email!,
+          displayName: user.displayName!
         });
-        
-        const userRoleObservable = this.authService.getUserRole(user.displayName);
-          userRoleObservable.subscribe(role => {
-            this.role = role.role;
-            // console.log(role);
-          });
 
-      }else{
+        const userRoleObservable = this.authService.getUserRole(user.displayName);
+        userRoleObservable.subscribe(role => {
+          this.role = role.role;
+          // console.log(role);
+        });
+
+      } else {
         this.authService.currentuserSignal.set(null);
       }
     });
@@ -59,17 +59,17 @@ export class NavComponent implements OnInit {
     this.isCollapsed = true; // Collapse the navbar
   }
 
-  logOut(){
-    this.authService.logout().subscribe(()=>{});
+  logOut() {
+    this.authService.logout().subscribe(() => { });
     this.router.navigate(['/login']);
   }
-  
- get isUserLoggedIn() {
+
+  get isUserLoggedIn() {
     const user = this.authService.currentuserSignal();
-    return user && user!=null;
+    return user && user != null;
   }
 
-  get user():User{
+  get user(): User {
     return this.authService.currentuserSignal() as User;
   }
 

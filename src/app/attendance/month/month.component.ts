@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SignIn, UserSummary } from '../../models';
 import { AttendanceService } from '../../services/attendance.service';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-month',
@@ -15,7 +16,7 @@ export class MonthComponent implements OnInit {
   startDate: string = '';
   endDate: string = '';
 
-  constructor(private attendanceService: AttendanceService, private authService: AuthService) { }
+  constructor(private attendanceService: AttendanceService, private authService: AuthService, private router:Router) { }
 
   ngOnInit(): void {
     // Fetch data for the current month
@@ -55,6 +56,13 @@ export class MonthComponent implements OnInit {
 
     // Convert the userMap object to an array
     this.userSummaries = Object.values(userMap);
+
+    // Sort userSummaries by totalAttendance from highest to lowest
+    this.userSummaries.sort((a, b) => b.totalAttendance - a.totalAttendance);
+  }
+
+  goBack(): void {
+    this.router.navigate(['admin']); 
   }
 }
 

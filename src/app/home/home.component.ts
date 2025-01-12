@@ -29,13 +29,13 @@ export class HomeComponent implements OnInit {
   excuse: any;
   fetchedData: SignIn | null = null;
   idtoUpdate: string | null = null;
-  signInList:SignIn[]=[];
+  signInList: SignIn[] = [];
 
   constructor(
     public authService: AuthService,
     private attendanceService: AttendanceService,
     private matSnackBar: MatSnackBar
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // this.sign = false;
@@ -46,35 +46,31 @@ export class HomeComponent implements OnInit {
           displayName: user.displayName!,
         });
         this.fetchData();
+        this.attendanceService.fetchDataByNameAndDateRange(user.displayName).subscribe(response => {
+          this.signInList = response;  
+        })
       } else {
         this.authService.currentuserSignal.set(null);
       }
     });
-    let user = this.authService.currentuserSignal().displayName;
-    this.attendanceService.fetchDataByNameAndDateRange(user).subscribe(response=>{
-      // alert('This is fired!')
-      this.signInList=response;
-      console.log(this.signInList);
-
-    })
   }
 
   signIn() {
     const data = {
       name: this.authService.currentuserSignal().displayName,
-      timeout:null
+      timeout: null
     };
     this.attendanceService.signIn(data).then(() => {
-        this.sign = true;
-        this.msg = "You signed in at";
-        console.log('Data saved with unique ID and timestamp!');
-        this.matSnackBar.open('Signed in successfully!', 'Close', {
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-          duration: 5000,
-        });
-        this.fetchData();
-      })
+      this.sign = true;
+      this.msg = "You signed in at";
+      console.log('Data saved with unique ID and timestamp!');
+      this.matSnackBar.open('Signed in successfully!', 'Close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        duration: 5000,
+      });
+      this.fetchData();
+    })
       .catch((error) => {
         console.error('Error saving data: ', error);
         this.matSnackBar.open('Error signing in!', 'Close', {
@@ -90,7 +86,7 @@ export class HomeComponent implements OnInit {
       this.fetchedData = data;
       this.sign = this.fetchedData != null ? true : false;
       this.idtoUpdate = this.fetchedData.id;
-      this.lateR=this.fetchedData.late==true?true:false
+      this.lateR = this.fetchedData.late == true ? true : false
       // this.msg = "You signed in at";
       // console.log(this.fetchedData)
     });
@@ -99,20 +95,20 @@ export class HomeComponent implements OnInit {
   signOut() {
     const data: SignIn = {
       name: this.fetchedData.name,
-      timestamp:this.fetchedData.timestamp,
-      timeout:new Date().toISOString()
-    } 
+      timestamp: this.fetchedData.timestamp,
+      timeout: new Date().toISOString()
+    }
     this.attendanceService.signOut(this.idtoUpdate, data).then(() => {
-        this.sign = true;
-        this.sigOut = true;
-        this.msg = "You signed out at";
-        this.fetchData();
-        this.matSnackBar.open('Sign out succssfully', 'Close', {
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-          duration: 5000
-        });
+      this.sign = true;
+      this.sigOut = true;
+      this.msg = "You signed out at";
+      this.fetchData();
+      this.matSnackBar.open('Sign out succssfully', 'Close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        duration: 5000
       });
+    });
   }
 
   lateReason(event: any) {

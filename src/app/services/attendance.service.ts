@@ -102,12 +102,22 @@ export class AttendanceService {
             }
           })
         ),
-        map(dataArray => dataArray.filter(item => {
-          const itemDate = item.timestamp ? new Date(item.timestamp) : null; // Convert timestamp to Date object
-          return itemDate && itemDate >= sevenDaysAgo && itemDate <= today; // Filter items within the last 7 days
-        }))
+        map(dataArray => {
+          // Filter items within the last 7 days
+          const filteredData = dataArray.filter(item => {
+            const itemDate = item.timestamp ? new Date(item.timestamp) : null; // Convert timestamp to Date object
+            return itemDate && itemDate >= sevenDaysAgo && itemDate <= today; // Filter items
+          });
+
+          // Sort filtered data from earliest to latest
+          return filteredData.sort((a, b) => {
+            const dateA = new Date(a.timestamp).getTime(); // Convert timestamp to milliseconds
+            const dateB = new Date(b.timestamp).getTime(); // Convert timestamp to milliseconds
+            return dateA - dateB; // Sort in ascending order (earliest to latest)
+          });
+        })
       );
-  }
+}
 
 
   // Fetch data for the current month
@@ -160,6 +170,13 @@ export class AttendanceService {
           dataArray.filter(item => {
             const itemDate = item.timestamp ? item.timestamp.split('T')[0] : null; // Extract date from timestamp
             return itemDate === inputDate; // Filter items matching the inputDate
+          })
+        ),
+        map(filteredData => 
+          filteredData.sort((a, b) => {
+            const timeA = new Date(a.timestamp).getTime(); // Convert timestamp to milliseconds
+            const timeB = new Date(b.timestamp).getTime(); // Convert timestamp to milliseconds
+            return timeA - timeB; // Sort in ascending order (earliest to latest)
           })
         )
       );
